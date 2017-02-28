@@ -48,7 +48,8 @@ def say():
 	pass
 
 def main(args):
-	HOST= "localhost"
+	# We have to make sure the remote server binds to all interfaces, not just localhost
+	HOST= "0.0.0.0"
 
 	# Create the server, binding to localhost on port 9999
 	server = socketserver.TCPServer((HOST, PORT), AssignmentRequestHandler)
