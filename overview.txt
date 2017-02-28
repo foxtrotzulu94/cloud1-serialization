@@ -3,8 +3,16 @@ COEN498 overview
 	-Client can send in JSON or protobuf
 	-Server receives connection and handles JSON or Protobuf (TODO enable timeouts)
 	-Server knows the animal (honeybadger)
-	-Client knows a list of animals (honeybadger, dog, killer whale, komodo dragon). This limits the amount of guesses made.
+	-Client knows a list of animals (honeybadger, dog, killer whale, gecko). This limits the amount of guesses made.
 	-Data model made to mimic NoSQL store with key-value pairs
+	
+TODO:
+	- Make Animals, Questions and Answers
+	- Serialize to JSON
+	- Test JSON
+	- Incorporate Protobuf
+	- Test protobuf
+	
 	
 Flow:
 	-server binds to socket
