@@ -9,7 +9,7 @@ class Honeybadger(Animal):
 		self.name = type(self).__name__
 		self.qualities = ['carnivore','predator','mammal','small']
 		self.abilities = ['walk','run','mate']
-		self.features = list(Animals._features)
+		self.features = list(Animal._features)
 		self.colors = ['black','grey','white']
 	#end 
 #end
@@ -20,7 +20,7 @@ class Dog(Animal):
 		self.name = type(self).__name__
 		self.qualities = ['omnivore','predator','mammal','carnivore']
 		self.abilities = ['walk','run','mate']
-		self.features = list(Animals._features)
+		self.features = list(Animal._features)
 		self.colors = ['black','grey','white']
 	#end 
 #end 

@@ -9,21 +9,35 @@ from hashlib import md5
 # common port to use
 PORT = 4981
 
-# hex string used for challenge. We don't want to get hung up in other connections
+CLIENT_ID = "COEN498PP-CLIENT1"
+SERVER_ID = "COEN498PP-SERVER1"
+# hex string used for challenge. We don't want to get hung up in other connections that aren't approved
 CHALLENGE = hexlify(md5('h'.encode()).digest()).decode()
 
 class serializable():
 	"""
-	Interface class for serialization in this assignment.
+	Interface/Abstract class for serialization in this assignment.
 	Not common in Python, but makes sure that we have both the protobuf and the json
 	"""
 	def serialize(self,mode=None):
 		if mode == 'json':
-			return self.serializeJSON()
-		elif 'proto' in mode:
+			return self.serializeJSON().encode()
+		elif 'protobuf' in mode:
 			return self.serializeProto()
 		else:
-			return None
+			raise ValueError
+	#end
+	
+	def deserialize(self,mode=None,raw_data=None):
+		# check the data.
+		assert(raw_data is not None and len(raw_data)>1)
+	
+		if mode == 'json':
+			self.deserializeJSON(raw_data.decode())  # JSON data is a string
+		elif 'protobuf' in mode:
+			return self.serializeProto(raw_data)
+		else:
+			raise ValueError
 	#end 
 	
 	def serializeJSON(self):
@@ -77,10 +91,20 @@ class Animal(serializable):
 
 class Question(serializable):
 	"""Class for wrapping the question being sent between client and server"""
+	
+	readableString = {'qualities':'is it {}?','abilities':'can it {}?','features':'does it have {}?','colors':'is it {} in color?'}
+	
 	def __init__(self, q_type=None, q_guess=None):
 		self.inquiry = q_type
 		self.guess = q_guess
 	#end 
+	
+	def __str__(self):
+		"""Make this question human readable"""
+		return Question.readableString[self.inquiry].format(self.guess)
+		
+	def __repr__(self):
+		return self.__str__()
 	
 	# TODO: override serializeProto
 	def serializeProto(self):
@@ -101,7 +125,15 @@ class Answer(serializable):
 		self.question = question
 		self.response = value
 		self.game_over = False
-	#end 
+	#end
+	
+	def readable(self):
+		"""Make this Answer readable instead of just true and false"""
+		if self.response:
+			return "Yes"
+		else:
+			return "No"
+	#end
 	
 	# TODO: override and serializeProto
 	def serializeJSON(self):
@@ -118,7 +150,8 @@ class Answer(serializable):
 		self_obj = json.loads(json_data)		
 		self.response = self_obj['response']
 		self.game_over = self_obj['game_over']
-		self.question.deserializeJSON(self_obj['question'])
+		self.question = Question()  # need to make a new object here
+		self.question.__dict__.update(self_obj['question'])
 	
 	def deserializeProto(self, proto_data):
 		raise NotImplementedError
