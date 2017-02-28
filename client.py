@@ -6,6 +6,7 @@
 import os
 import sys
 import socket
+from time import sleep
 
 from common import *
 
@@ -32,11 +33,11 @@ class QuestionTree():
 		self.root = root
 		
 	def moveLeft(self):
-		self.root = root.left
+		self.root = self.root.left
 		return self.root
 
 	def moveRight(self):
-		self.root = root.right
+		self.root = self.root.right
 		return self.root
 		
 	def evaluateResponse(self,isTrue):
@@ -48,7 +49,7 @@ class QuestionTree():
 
 def MakeQuestionTree():
 	# build all of the questions that the client will ask to guess the animal
-	root_question = Node(Question('qualities','mammal'), Node(Question('quality','large')), Node(Question('colors','black')))
+	root_question = Node(Question('qualities','mammal'), Node(Question('qualities','large')), Node(Question('colors','black')))
 	root_question.left.left = Node(Question('name','Gecko'))
 	root_question.left.right = Node(Question('name','KomodoDragon'))
 	
@@ -77,15 +78,36 @@ def clientSays(something, *args):
 def jsonClient(socket_link, qtree):
 	socket_link.send('json'.encode())
 	serverSays(socket_link.recv(4096).decode())
+	print()
+	clientSays("Let's play the guessing animal game!")
 	# now just play the game!
-	#while qtree.root is not None:
-	current_question = qtree.root.value
-	clientSays(str(current_question))
-	socket_link.send(current_question.serializeJSON().encode())
 	current_answer = Answer()
-	raw_answer = socket_link.recv(4096).decode()
-	current_answer.deserializeJSON(raw_answer)
-	serverSays('{}',current_answer.readable())
+	while qtree.root is not None:
+		sleep(0.5) # Delay showing the question on the screen
+		current_question = qtree.root.value
+		clientSays(str(current_question))
+		socket_link.send(current_question.serializeJSON().encode())
+		current_answer = Answer()
+		raw_answer = socket_link.recv(4096).strip().decode()
+		current_answer.deserializeJSON(raw_answer)
+		
+		sleep(0.5)  # Delay showing the answer
+		serverSays('{}',current_answer.readable())
+		
+		if current_answer.game_over:
+			sleep(0.5)
+			guessedAnimal = Animal()
+			raw_animal = socket_link.recv(4096).strip().decode()
+			guessedAnimal.deserializeJSON(raw_animal)
+			clientSays("Guessed the right animal! It's a {}", guessedAnimal.name)
+			print(str(guessedAnimal))
+			# server closes connection automatically
+			break
+		
+		if current_answer.response is True:
+			qtree.moveRight()
+		else:
+			qtree.moveLeft()
 
 def profobufClient(socket_link, qtree):
 	# TODO!!!
@@ -113,11 +135,11 @@ def main(args):
 		# if the connection is still alive, hand it off to a specialized function
 		handlers[args[1]](link,qtree)
 		
-		link.close()
-		# except Exception as e:
-			# print(e)
-			# print("Client failed. Aborting")
-			# exit(1)
+		try:
+			link.close()
+		except Exception as e:
+			clientSays("Closing")
+
 	else:
 		print("Serialization mode '{}' not recognized only {} are valid".format(args[1],str(handlers.keys)))
 		exit(1)	

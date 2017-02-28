@@ -18,7 +18,7 @@ class Dog(Animal):
 	def __init__(self):
 		"""Constructor"""
 		self.name = type(self).__name__
-		self.qualities = ['omnivore','predator','mammal','carnivore']
+		self.qualities = ['omnivore','predator','mammal','carnivore','domesticated']
 		self.abilities = ['walk','run','mate']
 		self.features = list(Animal._features)
 		self.colors = ['black','grey','white']
@@ -29,7 +29,7 @@ class Sheep(Animal):
 	def __init__(self):
 		"""Constructor"""
 		self.name = type(self).__name__
-		self.qualities = ['prey','herbivore']
+		self.qualities = ['prey','herbivore','mammal']
 		self.abilities = ['walk','run','mate']
 		self.features = ['fur','tail','bones']
 		self.colors = ['white','grey']

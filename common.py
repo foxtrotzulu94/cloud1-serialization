@@ -72,6 +72,10 @@ class Animal(serializable):
 		self.features = []
 		self.colors = []
 	#end 
+	
+	def __str__(self):
+		ch = ", "
+		return "{}\n   -Abilities: {}\n   -Qualities: {}\n   -Features: {}\n   -Known colors: {}\n".format(self.name,ch.join(self.abilities),ch.join(self.qualities),ch.join(self.features),ch.join(self.colors))
 
 	def serializeProto(self):
 		raise NotImplementedError
@@ -92,7 +96,7 @@ class Animal(serializable):
 class Question(serializable):
 	"""Class for wrapping the question being sent between client and server"""
 	
-	readableString = {'qualities':'is it {}?','abilities':'can it {}?','features':'does it have {}?','colors':'is it {} in color?'}
+	readableString = {'qualities':'is it {}?','abilities':'can it {}?','features':'does it have {}?','colors':'is it {} in color?', 'name': 'is it a {}?'}
 	
 	def __init__(self, q_type=None, q_guess=None):
 		self.inquiry = q_type

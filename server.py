@@ -6,6 +6,7 @@
 import os
 import sys
 import socket
+import random
 import datetime
 
 import socketserver
@@ -24,7 +25,6 @@ class AssignmentRequestHandler(socketserver.BaseRequestHandler):
 
 	It is instantiated once per connection to the server, deals with the request as needed
 	"""	
-
 	def handle(self):
 		""" Write method here """
 		supported_serializers = set(['json', 'protobuf'])
@@ -64,8 +64,10 @@ class AssignmentRequestHandler(socketserver.BaseRequestHandler):
 		log("Proceeding to animal game")
 		# The secret animal that the client has to guess :)
 		current_question = Question()
-		SecretAnimal = Honeybadger()
+		#SecretAnimal = Honeybadger()
+		SecretAnimal = random.choice(KnownAnimals)()
 		secret_data = SecretAnimal.__dict__
+		log("Client must guess {}".format(SecretAnimal.name))
 		while True:
 			# read the question
 			question_data = self.request.recv(4096).strip()
@@ -80,6 +82,7 @@ class AssignmentRequestHandler(socketserver.BaseRequestHandler):
 			self.request.send(current_answer.serialize(mode))
 			
 			if current_answer.game_over:
+				self.request.send(SecretAnimal.serialize(mode))
 				log("Game with {} ended".format(remote_name))
 				break
 		# end while
