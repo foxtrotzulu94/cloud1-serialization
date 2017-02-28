@@ -1,0 +1,39 @@
+COEN498 overview
+	-Client server
+	-Client can send in JSON or protobuf
+	-Server receives connection and handles JSON or Protobuf (TODO enable timeouts)
+	-Server knows the animal (honeybadger)
+	-Client knows a list of animals (honeybadger, dog, killer whale, komodo dragon). This limits the amount of guesses made.
+	-Data model made to mimic NoSQL store with key-value pairs
+	
+Flow:
+	-server binds to socket
+	-client connects
+	-server challenges client
+	-client responds
+	-server confirms
+	-client notifies serialization type
+	while question guess not right
+		-client sends question
+			-server answers
+	-done
+	
+DATA:
+	Constants wrapper
+		known qualities, abilities, colors, etc of an animal
+		qualities = [carnivore, herbivore, omnivore, predator, prey, mammal, reptile, ]
+		abilities = ['run','walk','fly','swim','lay eggs','mate'] # TODO: fill this up
+		colors = ['beige', 'black', 'blue', 'brown', 'crimson', 'cyan', 'dimgray',  'firebrick', 'fuchsia', 'gold', 'gray', 'green', 'greenyellow', 'honeydew', 'indigo', 'ivory', 'khaki', 'lavender','lightblue', 'lime', 'limegreen', 'magenta', 'maroon', 'navy',  'olive', 'olivedrab', 'orange', 'pink', 'plum', 'purple', 'red', 'salmon', 'silver', 'skyblue', 'slateblue', 'slategray', 'tan', 'teal', 'turquoise', 'violet', 'white', 'yellow']
+		
+		
+
+	Animal class
+		with properties
+		Key value store
+		{ name: "honeybadger", qualities:{carnivore, predator, mammal}, abilities:{run, eat, mate, swim}, color:{silver, white, black}, features:{tail, fur, teeth, paws, bones}}
+	Question class
+		{ inquiry: "abilities", guess: "run" }
+		make a toString for human readability => "Does it run?", "is it a honeybadger?", "is it black?", "is it a carnivore?", ""
+	Answer
+		contains original question object
+		{ Response: true/false }
