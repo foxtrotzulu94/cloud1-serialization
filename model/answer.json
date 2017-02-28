@@ -1,0 +1,8 @@
+{
+  "question": {
+    "inquiry": "<animal property name>",
+    "guess": "<guess>"
+  },
+  "response": <true or false>,
+  "game_over": <true or false>
+}

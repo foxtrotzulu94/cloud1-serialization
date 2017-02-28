@@ -1,0 +1,53 @@
+{
+  "name": "Animal",
+  "abilities": [
+    "fly",
+    "walk",
+    "lay eggs",
+    "mate",
+    "run",
+    "swim"
+  ],
+  "qualities": [
+    "omnivore",
+    "prey",
+    "mammal",
+    "large",
+    "small",
+    "aquatic",
+    "herbivore",
+    "reptile",
+    "predator",
+    "carnivore",
+    "domesticated"
+  ],
+  "colors": [
+    "white",
+    "purple",
+    "black",
+    "pink",
+    "maroon",
+    "red",
+    "silver",
+    "green",
+    "gray",
+    "yellow",
+    "magenta",
+    "gold",
+    "tan",
+    "violet",
+    "brown",
+    "navy",
+    "beige",
+    "blue",
+    "orange"
+  ],
+  "features": [
+    "teeth",
+    "fur",
+    "scales",
+    "paws",
+    "bones",
+    "tail"
+  ]
+}
