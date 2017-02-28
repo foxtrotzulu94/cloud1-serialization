@@ -17,6 +17,15 @@ class serializable():
 	Interface class for serialization in this assignment.
 	Not common in Python, but makes sure that we have both the protobuf and the json
 	"""
+	def serialize(self,mode=None):
+		if mode == 'json':
+			return self.serializeJSON()
+		elif 'proto' in mode:
+			return self.serializeProto()
+		else
+			return None
+	#end 
+	
 	def serializeJSON(self):
 		"""Makes a valid json string of 'most' objects. Subclasses may not be easily transformed into dicts"""
 		return json.dumps(self.__dict__)
@@ -33,6 +42,13 @@ class serializable():
 
 class Animal(serializable):
 	"""Common animal class"""
+	
+	# These sets are general items animals can have and this is shared among all animal classes
+	# This is just to keep track of which features can be asked and are valid
+	_qualities = set(['carnivore', 'herbivore', 'omnivore', 'predator', 'prey', 'mammal', 'reptile', 'large', 'small'])  # e.g 'is it large?', 'is it herbivore?'
+	_abilities = set(['run','walk','fly','swim','lay eggs','mate'])  # 'can it walk?', 'can it lay egss?'
+	_features = set(['fur','tail', 'teeth', 'paws', 'bones','scales'])  # 'does it have fur/tail/teeth?'
+	_colors =  set(['beige', 'black', 'blue', 'brown', 'gold', 'gray', 'green', 'magenta', 'maroon', 'navy', 'orange', 'pink', 'purple', 'red', 'silver', 'tan', 'violet', 'white', 'yellow'])
 
 	def __init__(self):
 		"""Constructor"""
