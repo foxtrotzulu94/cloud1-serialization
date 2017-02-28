@@ -22,7 +22,7 @@ class serializable():
 			return self.serializeJSON()
 		elif 'proto' in mode:
 			return self.serializeProto()
-		else
+		else:
 			return None
 	#end 
 	
@@ -45,7 +45,7 @@ class Animal(serializable):
 	
 	# These sets are general items animals can have and this is shared among all animal classes
 	# This is just to keep track of which features can be asked and are valid
-	_qualities = set(['carnivore', 'herbivore', 'omnivore', 'predator', 'prey', 'mammal', 'reptile', 'large', 'small'])  # e.g 'is it large?', 'is it herbivore?'
+	_qualities = set(['carnivore', 'herbivore', 'omnivore', 'predator', 'prey', 'mammal', 'reptile', 'large', 'small', 'aquatic', 'domesticated'])  # e.g 'is it large?', 'is it herbivore?'
 	_abilities = set(['run','walk','fly','swim','lay eggs','mate'])  # 'can it walk?', 'can it lay egss?'
 	_features = set(['fur','tail', 'teeth', 'paws', 'bones','scales'])  # 'does it have fur/tail/teeth?'
 	_colors =  set(['beige', 'black', 'blue', 'brown', 'gold', 'gray', 'green', 'magenta', 'maroon', 'navy', 'orange', 'pink', 'purple', 'red', 'silver', 'tan', 'violet', 'white', 'yellow'])
@@ -100,6 +100,7 @@ class Answer(serializable):
 	def __init__(self, question=None, value=None):
 		self.question = question
 		self.response = value
+		self.game_over = False
 	#end 
 	
 	# TODO: override and serializeProto
@@ -116,6 +117,7 @@ class Answer(serializable):
 	def deserializeJSON(self, json_data):
 		self_obj = json.loads(json_data)		
 		self.response = self_obj['response']
+		self.game_over = self_obj['game_over']
 		self.question.deserializeJSON(self_obj['question'])
 	
 	def deserializeProto(self, proto_data):

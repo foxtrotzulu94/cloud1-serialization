@@ -10,9 +10,10 @@ import socket
 import socketserver
 
 from common import *
+from animals import *
 
 # TODO: put the honeybadger here
-AnimalSecret = None
+AnimalSecret = Honeybadger
 
 class AssignmentRequestHandler(socketserver.BaseRequestHandler):
 	"""

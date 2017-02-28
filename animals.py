@@ -40,7 +40,7 @@ class Orca(Animal):
 	def __init__(self):
 		"""Constructor"""
 		self.name = type(self).__name__
-		self.qualities = ['carnivore','predator','mammal','large']
+		self.qualities = ['carnivore','predator','mammal','large','aquatic']
 		self.abilities = ['walk','run','mate','swim']
 		self.features = ['teeth','tail','bones']
 		self.colors = ['black','white']
@@ -70,3 +70,4 @@ class Gecko(Animal):
 #end
 
 KnownAnimals = [Honeybadger,Dog,Gecko,Orca,Sheep,KomodoDragon]
+AnimalMap = {x.__name__:x for x in KnownAnimals}
