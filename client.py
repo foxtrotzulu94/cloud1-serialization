@@ -12,7 +12,7 @@ from common import *
 
 ### Client globals
 # Run the script using the defualt operation mode
-DEFAULTS = True
+DEFAULTS = False
 HOST = "localhost"
 SERIALIZATION = "json"
 DEF_ARGS = [HOST,SERIALIZATION]
