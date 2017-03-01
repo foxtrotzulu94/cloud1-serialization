@@ -70,7 +70,7 @@ class AssignmentRequestHandler(socketserver.BaseRequestHandler):
 		log("Client must guess {}".format(SecretAnimal.name))
 		while True:
 			# read the question
-			question_data = self.request.recv(4096).strip()
+			question_data = self.request.recv(4096)
 			current_question.deserialize(mode,question_data)
 			
 			# answer the question and send it back over the wire

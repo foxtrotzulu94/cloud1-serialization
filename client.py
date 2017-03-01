@@ -90,7 +90,7 @@ def PlayTheGame(socket_link, mode, qtree):
 		clientSays(str(current_question))
 		socket_link.send(current_question.serialize(mode))
 		current_answer = Answer()
-		raw_answer = socket_link.recv(4096).strip()
+		raw_answer = socket_link.recv(4096)
 		current_answer.deserialize(mode,raw_answer)
 		
 		sleep(0.5)  # Delay showing the answer
@@ -99,7 +99,7 @@ def PlayTheGame(socket_link, mode, qtree):
 		if current_answer.game_over:
 			sleep(0.5)
 			guessedAnimal = Animal()
-			raw_animal = socket_link.recv(4096).strip()
+			raw_animal = socket_link.recv(4096)
 			guessedAnimal.deserialize(mode,raw_animal)
 			clientSays("Guessed the right animal! It's a {}", guessedAnimal.name)
 			print(str(guessedAnimal))

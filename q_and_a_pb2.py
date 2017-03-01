@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='q-and-a.proto',
   package='cloud1',
   syntax='proto2',
-  serialized_pb=_b('\n\rq-and-a.proto\x12\x06\x63loud1\"*\n\x08Question\x12\x0f\n\x07inquiry\x18\x01 \x02(\t\x12\r\n\x05guess\x18\x02 \x02(\t\"Q\n\x06\x41nswer\x12\x10\n\x08response\x18\x01 \x02(\x08\x12\x11\n\tgame_over\x18\x02 \x01(\x08\x12\"\n\x08question\x18\x03 \x01(\x0b\x32\x10.cloud1.Question')
+  serialized_pb=_b('\n\rq-and-a.proto\x12\x06\x63loud1\"*\n\x08Question\x12\x0f\n\x07inquiry\x18\x01 \x02(\t\x12\r\n\x05guess\x18\x02 \x02(\t\"Q\n\x06\x41nswer\x12\x10\n\x08response\x18\x03 \x02(\x08\x12\x11\n\tgame_over\x18\x04 \x01(\x08\x12\"\n\x08question\x18\x05 \x01(\x0b\x32\x10.cloud1.Question')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -73,21 +73,21 @@ _ANSWER = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='response', full_name='cloud1.Answer.response', index=0,
-      number=1, type=8, cpp_type=7, label=2,
+      number=3, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='game_over', full_name='cloud1.Answer.game_over', index=1,
-      number=2, type=8, cpp_type=7, label=1,
+      number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='question', full_name='cloud1.Answer.question', index=2,
-      number=3, type=11, cpp_type=10, label=1,
+      number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

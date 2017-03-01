@@ -41,7 +41,7 @@ class Orca(Animal):
 		"""Constructor"""
 		self.name = type(self).__name__
 		self.qualities = ['carnivore','predator','mammal','large','aquatic']
-		self.abilities = ['walk','run','mate','swim']
+		self.abilities = ['mate','swim']
 		self.features = ['teeth','tail','bones']
 		self.colors = ['black','white']
 	#end 

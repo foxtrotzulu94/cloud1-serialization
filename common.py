@@ -143,7 +143,6 @@ class Question(serializable):
 		self_obj.ParseFromString(proto_data)
 		self.inquiry = self_obj.inquiry
 		self.guess = self_obj.guess
-
 #end class
 
 class Answer(serializable):

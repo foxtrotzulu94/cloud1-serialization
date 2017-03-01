@@ -6,7 +6,7 @@ message Question {
 }
 
 message Answer {
-  required bool response =1;
-  optional bool game_over = 2;
-  optional Question question =3;
+  required bool response =3;
+  optional bool game_over = 4;
+  optional Question question =5;
 }
