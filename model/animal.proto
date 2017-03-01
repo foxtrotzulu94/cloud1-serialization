@@ -1,0 +1,11 @@
+package cloud1;
+
+message Animal {
+  required string name = 1;
+  
+  repeated string qualities = 2;
+  repeated string features = 3;
+  repeated string colors = 4;
+  repeated string abilities = 5;
+  
+}

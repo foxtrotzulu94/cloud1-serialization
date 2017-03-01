@@ -2,9 +2,13 @@
 # Javier E. Fajardo - 26487602
 
 # common.py: some data and definitions necessary for both client and server
+import animal_pb2
+import q_and_a_pb2
 import json
+
 from binascii import hexlify, unhexlify
 from hashlib import md5
+
 
 # common port to use
 PORT = 4981
@@ -35,7 +39,7 @@ class serializable():
 		if mode == 'json':
 			self.deserializeJSON(raw_data.decode())  # JSON data is a string
 		elif 'protobuf' in mode:
-			return self.serializeProto(raw_data)
+			return self.deserializeProto(raw_data)
 		else:
 			raise ValueError
 	#end 
@@ -78,7 +82,14 @@ class Animal(serializable):
 		return "{}\n   -Abilities: {}\n   -Qualities: {}\n   -Features: {}\n   -Known colors: {}\n".format(self.name,ch.join(self.abilities),ch.join(self.qualities),ch.join(self.features),ch.join(self.colors))
 
 	def serializeProto(self):
-		raise NotImplementedError
+		proto_data = animal_pb2.Animal()
+		proto_data.name = self.name
+		proto_data.qualities.extend(self.qualities)
+		proto_data.abilities.extend(self.abilities)
+		proto_data.features.extend(self.features)
+		proto_data.colors.extend(self.colors)
+		return proto_data.SerializeToString()
+	#end 
 		
 	def deserializeJSON(self, json_data):
 		self_obj = json.loads(json_data)
@@ -89,7 +100,13 @@ class Animal(serializable):
 		self.colors = self_obj['colors']
 	
 	def deserializeProto(self, proto_data):
-		raise NotImplementedError
+		self_obj = animal_pb2.Animal()
+		self_obj.ParseFromString(proto_data)
+		self.name = self_obj.name
+		self.abilities = self_obj.abilities
+		self.qualities = self_obj.qualities
+		self.features = self_obj.features
+		self.colors = self_obj.colors
 	
 #end class animal
 
@@ -110,9 +127,11 @@ class Question(serializable):
 	def __repr__(self):
 		return self.__str__()
 	
-	# TODO: override serializeProto
 	def serializeProto(self):
-		raise NotImplementedError
+		proto_data = q_and_a_pb2.Question()
+		proto_data.inquiry = self.inquiry
+		proto_data.guess = self.guess
+		return proto_data.SerializeToString()
 		
 	def deserializeJSON(self, json_data):
 		self_obj = json.loads(json_data)
@@ -120,7 +139,11 @@ class Question(serializable):
 		self.guess = self_obj['guess']
 	
 	def deserializeProto(self, proto_data):
-		raise NotImplementedError
+		self_obj = q_and_a_pb2.Question()
+		self_obj.ParseFromString(proto_data)
+		self.inquiry = self_obj.inquiry
+		self.guess = self_obj.guess
+
 #end class
 
 class Answer(serializable):
@@ -139,7 +162,6 @@ class Answer(serializable):
 			return "No"
 	#end
 	
-	# TODO: override and serializeProto
 	def serializeJSON(self):
 		"""Makes a valid json string of this object"""
 		question_dict = self.question.__dict__
@@ -148,7 +170,13 @@ class Answer(serializable):
 		return json.dumps(this_dict)
 	
 	def serializeProto(self):
-		raise NotImplementedError
+		proto_data = q_and_a_pb2.Answer()
+		proto_data.response = self.response
+		proto_data.game_over = self.game_over
+		
+		proto_data.question.inquiry = self.question.inquiry
+		proto_data.question.guess = self.question.guess
+		return proto_data.SerializeToString()
 		
 	def deserializeJSON(self, json_data):
 		self_obj = json.loads(json_data)		
@@ -158,5 +186,12 @@ class Answer(serializable):
 		self.question.__dict__.update(self_obj['question'])
 	
 	def deserializeProto(self, proto_data):
-		raise NotImplementedError
+		self_obj = q_and_a_pb2.Answer()
+		self_obj.ParseFromString(proto_data)
+		self.response = self_obj.response
+		self.game_over = self_obj.game_over
+		
+		self.question = Question()  # need to make a new object here
+		self.question.inquiry = self_obj.question.inquiry
+		self.question.guess = self_obj.question.guess
 #end class

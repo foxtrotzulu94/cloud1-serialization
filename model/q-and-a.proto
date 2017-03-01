@@ -1,0 +1,12 @@
+package cloud1;
+
+message Question {
+  required string inquiry = 1;
+  required string guess = 2;
+}
+
+message Answer {
+  required bool response =1;
+  optional bool game_over = 2;
+  optional Question question =3;
+}
