@@ -4,3 +4,4 @@ __pycache__/
 *.manifest
 *.spec
 *.tmp
+build/

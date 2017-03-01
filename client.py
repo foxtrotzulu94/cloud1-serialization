@@ -141,7 +141,7 @@ def main(args):
 
 	else:
 		print("Serialization mode '{}' not recognized only {} are valid".format(args[1],str(handlers)))
-		exit(1)	
+		sys.exit(1)	
 #end main
 
 if __name__=="__main__":
@@ -150,7 +150,7 @@ if __name__=="__main__":
 	if len(args) <2:
 		if not DEFAULTS:
 			print("Usage: python3 client.py <Server IP> <Serialization Mode (json or protobuf)>")
-			exit(1)
+			sys.exit(1)
 		else:
 			print("Using defaults arguments")
 			args = DEF_ARGS
