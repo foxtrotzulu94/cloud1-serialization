@@ -68,15 +68,17 @@ def serverSays(something, *args):
 		print("SERVER: "+something.format(*args))
 	else:
 		print("SERVER: "+something)
+#end serverSays
 	
 def clientSays(something, *args):
 	if args is not None:
 		print("CLIENT: "+something.format(*args))
 	else:
 		print("CLIENT: "+something)
+#end clientSays
 	
-def jsonClient(socket_link, qtree):
-	socket_link.send('json'.encode())
+def PlayTheGame(socket_link, mode, qtree):
+	socket_link.send(mode.encode())
 	serverSays(socket_link.recv(4096).decode())
 	print()
 	clientSays("Let's play the guessing animal game!")
@@ -86,10 +88,10 @@ def jsonClient(socket_link, qtree):
 		sleep(0.5) # Delay showing the question on the screen
 		current_question = qtree.root.value
 		clientSays(str(current_question))
-		socket_link.send(current_question.serializeJSON().encode())
+		socket_link.send(current_question.serialize(mode))
 		current_answer = Answer()
-		raw_answer = socket_link.recv(4096).strip().decode()
-		current_answer.deserializeJSON(raw_answer)
+		raw_answer = socket_link.recv(4096).strip()
+		current_answer.deserialize(mode,raw_answer)
 		
 		sleep(0.5)  # Delay showing the answer
 		serverSays('{}',current_answer.readable())
@@ -97,8 +99,8 @@ def jsonClient(socket_link, qtree):
 		if current_answer.game_over:
 			sleep(0.5)
 			guessedAnimal = Animal()
-			raw_animal = socket_link.recv(4096).strip().decode()
-			guessedAnimal.deserializeJSON(raw_animal)
+			raw_animal = socket_link.recv(4096).strip()
+			guessedAnimal.deserialize(mode,raw_animal)
 			clientSays("Guessed the right animal! It's a {}", guessedAnimal.name)
 			print(str(guessedAnimal))
 			# server closes connection automatically
@@ -108,19 +110,16 @@ def jsonClient(socket_link, qtree):
 			qtree.moveRight()
 		else:
 			qtree.moveLeft()
-
-def profobufClient(socket_link, qtree):
-	# TODO!!!
-	raise NotImplementedError
+#end PlayTheGame
 	
 def main(args):
-	print(args)
-	handlers = {'json':jsonClient, 'protobuf': profobufClient}
+	handlers = {'json', 'protobuf'}
 	
 	# Validate the serialization mode
 	if args[1] in handlers:
 		qtree = MakeQuestionTree()
 		host = args[0]
+		mode = args[1]
 		port = PORT
 		
 		clientSays("Connecting to server ...")
@@ -133,7 +132,7 @@ def main(args):
 		serverSays(link.recv(4096).strip().decode())
 		
 		# if the connection is still alive, hand it off to a specialized function
-		handlers[args[1]](link,qtree)
+		PlayTheGame(link,mode,qtree)
 		
 		try:
 			link.close()
@@ -141,15 +140,15 @@ def main(args):
 			clientSays("Closing")
 
 	else:
-		print("Serialization mode '{}' not recognized only {} are valid".format(args[1],str(handlers.keys)))
+		print("Serialization mode '{}' not recognized only {} are valid".format(args[1],str(handlers)))
 		exit(1)	
 #end main
 
 if __name__=="__main__":
 	args = sys.argv[1:]
+	print("COEN498 Assignment 1 Client")
 	if len(args) <2:
 		if not DEFAULTS:
-			print("COEN498 Assignment 1 Client")
 			print("Usage: python3 client.py <Server IP> <Serialization Mode (json or protobuf)>")
 			exit(1)
 		else:
